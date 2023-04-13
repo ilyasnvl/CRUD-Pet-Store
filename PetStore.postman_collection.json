@@ -1,0 +1,281 @@
+{
+	"info": {
+		"_postman_id": "7bef28fb-c8f0-4206-9774-73fba795d5c2",
+		"name": "PetStore",
+		"description": "CRUD for API Pet Store",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "10285066"
+	},
+	"item": [
+		{
+			"name": "Create Users",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Check Data type\", function () {\r",
+							"    var jsonData = pm.response.json();\r",
+							"    pm.expect(jsonData.type).to.eql(\"unknown\");\r",
+							"\r",
+							"    var id = pm.response.json().message;\r",
+							"    pm.environment.set(\"user\", \"user1\");\r",
+							"    pm.environment.set(\"id\", id);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"id\": {{$timestamp}},\r\n  \"username\": \"user1\",\r\n  \"firstName\": \"user\",\r\n  \"lastName\": \"old\",\r\n  \"email\": \"userold@gmail.com\",\r\n  \"password\": \"123456\",\r\n  \"phone\": \"6209023090\",\r\n  \"userStatus\": 1\r\n}"
+				},
+				"url": {
+					"raw": "{{url}}/user",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"user"
+					]
+				},
+				"description": "Create data user baru"
+			},
+			"response": []
+		},
+		{
+			"name": "Get Users",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Body matches string\", function () {\r",
+							"    pm.expect(pm.response.text()).to.include(\"user\");\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Check Data Firstname and User Status Active\", function () {\r",
+							"    var jsonData = pm.response.json();\r",
+							"    pm.expect(jsonData.firstName).to.eql(\"user\");\r",
+							"    pm.expect(jsonData.userStatus).to.eql(1);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "accept",
+						"value": "application/json"
+					}
+				],
+				"url": {
+					"raw": "{{url}}/user/:user",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"user",
+						":user"
+					],
+					"variable": [
+						{
+							"key": "user",
+							"value": "{{user}}"
+						}
+					]
+				},
+				"description": "Mengambil data user yang sudah dibuat"
+			},
+			"response": []
+		},
+		{
+			"name": "Update Users",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Body matches string\", function () {\r",
+							"    pm.expect(pm.response.text()).to.include(\"type\");\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Body is correct\", function () {\r",
+							"    let expMessage = pm.environment.get(\"id\");\r",
+							"    var jsonData = pm.response.json();\r",
+							"    pm.expect(jsonData.message).to.eql(expMessage);\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"id\": {{id}},\r\n  \"username\": \"user1\",\r\n  \"firstName\": \"user\",\r\n  \"lastName\": \"new baru\",\r\n  \"email\": \"usernewbaru@gmail.com\",\r\n  \"password\": \"123456\",\r\n  \"phone\": \"6209023090\",\r\n  \"userStatus\": 0\r\n}"
+				},
+				"url": {
+					"raw": "{{url}}/user/:user",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"user",
+						":user"
+					],
+					"variable": [
+						{
+							"key": "user",
+							"value": "{{user}}"
+						}
+					]
+				},
+				"description": "Edit data user"
+			},
+			"response": []
+		},
+		{
+			"name": "Get User After Update",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Body matches string\", function () {\r",
+							"    pm.expect(pm.response.text()).to.include(\"user\");\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Check Data Firstname and User Status inactive\", function () {\r",
+							"    var jsonData = pm.response.json();\r",
+							"    pm.expect(jsonData.firstName).to.eql(\"user\");\r",
+							"    pm.expect(jsonData.userStatus).to.eql(0);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "accept",
+						"value": "application/json"
+					}
+				],
+				"url": {
+					"raw": "{{url}}/user/:user",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"user",
+						":user"
+					],
+					"variable": [
+						{
+							"key": "user",
+							"value": "{{user}}"
+						}
+					]
+				},
+				"description": "Mengambil data user setelah diubah"
+			},
+			"response": []
+		},
+		{
+			"name": "Delete Users",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Body is correct\", function () {\r",
+							"    let expUser = pm.environment.get(\"user\");\r",
+							"    var jsonData = pm.response.json();\r",
+							"    pm.expect(jsonData.message).to.eql(expUser);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "accept",
+						"value": "application/json"
+					}
+				],
+				"url": {
+					"raw": "{{url}}/user/:user",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"user",
+						":user"
+					],
+					"variable": [
+						{
+							"key": "user",
+							"value": "{{user}}"
+						}
+					]
+				},
+				"description": "Delete data user"
+			},
+			"response": []
+		}
+	]
+}
